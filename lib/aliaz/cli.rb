@@ -3,7 +3,7 @@ require 'aliaz/aliaz'
 
 module Aliaz
   class CLI < Thor
-    desc "add APP.ALIAS VALUE", "say hello to NAME"
+    desc "add APP.ALIAS VALUE", "Adding alias for app."
     def add(app_and_alias, *alias_value)
 
       app_alias = app_and_alias.split(".")
