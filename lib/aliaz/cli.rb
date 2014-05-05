@@ -39,7 +39,7 @@ module Aliaz
         puts aliaz.aliases :format => :bash
       else
         puts "\nAll Aliases"
-        puts aliaz.aliases.to_yaml
+        puts aliaz.aliases(app_name).to_yaml
       end
       0
     end

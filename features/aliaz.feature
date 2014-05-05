@@ -56,6 +56,17 @@ Feature: Aliaz
       alias: some_alias
     """
 
+  Scenario: Get all aliases in readable format for specific app
+    When I run `aliaz add app_name.alias some_alias`
+    And I run `aliaz add app_name1.alias1 some_alias1`
+    And I run `aliaz aliases app_name1`
+    Then the exit status should be 0
+    And the output should not contain:
+    """
+    app_name:
+      alias: some_alias
+    """
+
   Scenario: Get all aliases in bash format
     When I run `aliaz add app_name.alias some_alias`
     And I run `aliaz aliases --bash`
