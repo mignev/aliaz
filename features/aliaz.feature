@@ -8,7 +8,23 @@ Feature: Aliaz
     Then the exit status should be 0
     And the output should contain:
     """
-    Alias was created successfully!
+    Alias 'alias' with value 'some_alias' was created successfully!
+    """
+
+  Scenario: Add alias to app with value with spaces
+    When I run `aliaz add app_name.alias some alias value`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    Alias 'alias' with value 'some alias value' was created successfully!
+    """
+
+  Scenario: Add alias to app with dotted alias name
+    When I run `aliaz add app_name.alias.dotted.alias alias value`
+    Then the exit status should be 0
+    And the output should contain:
+    """
+    Alias 'alias.dotted.alias' with value 'alias value' was created successfully!
     """
 
   Scenario: Remove alias from app

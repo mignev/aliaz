@@ -13,7 +13,7 @@ module Aliaz
 
       aliaz = Aliaz.new
       aliaz.add app, the_alias, the_alias_value
-      puts "Alias was created successfully!"
+      puts "Alias '#{the_alias}' with value '#{the_alias_value}' was created successfully!"
 
       0
     end
