@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+begin
+  Signal.trap("PIPE", "EXIT") if Signal.list["PIPE"]
+
+  retcode = begin
+    require 'aliaz'
+    Aliaz::CLI.start(ARGV)
+  rescue Interrupt
+    puts "Interrupted"
+    128 + 2
+  rescue SystemExit => e
+    puts
+    e.status
+  end
+
+  if retcode == nil || retcode == {}
+    retcode = 1
+
+    # return codes for uncaught signals are 128 + the signal code
+    retcode = 128 + $?.termsig if $?.signaled? and !$?.termsig.nil?
+  end
+
+  exit retcode
+end
