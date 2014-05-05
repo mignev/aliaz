@@ -1,0 +1,17 @@
+language: ruby
+cache: bundler
+
+rvm:
+  - 1.9.3
+  - 2.0.0
+
+script:
+  - 'bundle exec rake spec'
+  - 'bundle exec cucumber features'
+
+notifications:
+  email:
+    recipients:
+      - m@ignev.net
+    on_failure: change
+    on_success: never
