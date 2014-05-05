@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["m.ignev@gmail.com"]
   spec.summary       = %q{Extend every shell app with custom aliases.}
   spec.description   = %q{}
-  spec.homepage      = ""
+  spec.homepage      = "http://github.com/mignev/aliaz"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
