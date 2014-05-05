@@ -9,7 +9,7 @@ module Aliaz
       app_alias = app_and_alias.split(".")
       app = app_alias[0]
       the_alias = app_alias[1..-1].join('.')
-      the_alias_value = alias_value.join('')
+      the_alias_value = alias_value.join(' ')
 
       aliaz = Aliaz.new
       aliaz.add app, the_alias, the_alias_value
