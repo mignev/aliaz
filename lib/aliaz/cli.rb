@@ -38,6 +38,7 @@ module Aliaz
       if options[:bash]
         puts aliaz.aliases :format => :bash
       else
+        puts "\nAll Aliases"
         puts aliaz.aliases.to_yaml
       end
       0
