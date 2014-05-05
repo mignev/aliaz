@@ -59,6 +59,7 @@ module Aliaz
     end
 
     def aliases(app_name=nil, **kwargs)
+      create_empty_conf_file
       aliases = load_aliases
 
       if app_name
