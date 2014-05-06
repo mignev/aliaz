@@ -2,7 +2,10 @@
 
 # Don't waste your time here. This is just an experiment.
 
+[![Build Status](https://travis-ci.org/mignev/aliaz.svg?branch=master)](https://travis-ci.org/mignev/aliaz)
+
 The idea behind this script is to extend every shell command with custom arguments. The inspiration came from the idea of Git aliases.
+
 
 ### Usage
 
