@@ -6,22 +6,22 @@ module Aliaz
 
   class Aliaz
 
-    def conf_path
+    def aliazconf
       "#{ENV['HOME']}/.aliazconf"
     end
 
     def create_empty_conf_file
-      unless File.exist? conf_path
-        File.open(conf_path, 'w') {}
+      unless File.exist? aliazconf
+        File.open(aliazconf, 'w') {}
       end
     end
 
     def load_aliases
-      YAML::load_file conf_path
+      YAML::load_file aliazconf
     end
 
     def save_aliases(aliases)
-      File.open conf_path, 'w' do |file|
+      File.open aliazconf, 'w' do |file|
         file.write aliases.to_yaml
       end
     end

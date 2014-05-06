@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://github.com/mignev/aliaz"
   spec.license       = "MIT"
 
+  spec.extensions = ["Rakefile"]
+
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})

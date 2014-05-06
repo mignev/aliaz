@@ -7,12 +7,12 @@ describe "Aliaz" do
     ENV['HOME'] = "/tmp"
 
     @aliaz = Aliaz::Aliaz.new
-    @conf_path = "#{ENV['HOME']}/.aliazconf"
+    @aliazconf = "#{ENV['HOME']}/.aliazconf"
   end
 
   after(:each) do
-    if File.exist? @conf_path
-      File.delete @conf_path
+    if File.exist? @aliazconf
+      File.delete @aliazconf
     end
 
     ENV['HOME'] = @real_home
@@ -20,8 +20,8 @@ describe "Aliaz" do
 
   describe "Aliaz" do
 
-    it 'should have set default conf_path' do
-      expect(@aliaz.conf_path).to eq @conf_path
+    it 'should have set default aliazconf' do
+      expect(@aliaz.aliazconf).to eq @aliazconf
     end
 
     describe "Creating aliases" do
@@ -30,23 +30,23 @@ describe "Aliaz" do
       end
 
       it 'should have created conf file' do
-        expect(File).to exist @conf_path
+        expect(File).to exist @aliazconf
       end
 
       it 'should conf file be created only once' do
         @aliaz.add "app_name", "app_alias", "alias value"
-        expect(File.read(@conf_path)).to_not eq ''
+        expect(File.read(@aliazconf)).to_not eq ''
 
       end
 
       it 'should have alias in conf file' do
-        conf = YAML::load_file @conf_path
+        conf = @aliaz.load_aliases
         expect(conf['app_name']['app_alias']).to eq 'alias value'
       end
 
       it 'should have 2 aliases for an app' do
         @aliaz.add "app_name", "app_alias1", "alias value1"
-        conf = YAML::load_file @conf_path
+        conf = @aliaz.load_aliases
         expect(conf['app_name']['app_alias']).to eq 'alias value'
         expect(conf['app_name']['app_alias1']).to eq 'alias value1'
       end
@@ -55,7 +55,7 @@ describe "Aliaz" do
         @aliaz.add "app_name", "app_alias1", "alias value1"
         @aliaz.add "app_name1", "app_alias", "alias value"
 
-        conf = YAML::load_file @conf_path
+        conf = @aliaz.load_aliases
 
         expect(conf['app_name']['app_alias']).to eq 'alias value'
         expect(conf['app_name']['app_alias1']).to eq 'alias value1'
@@ -70,7 +70,7 @@ describe "Aliaz" do
         @aliaz.add "app_name", "app_alias", "value"
         @aliaz.remove "app_name", "app_alias"
 
-        conf = YAML::load_file @conf_path
+        conf = @aliaz.load_aliases
 
         conf['app_name'].should be_empty
       end
@@ -80,7 +80,7 @@ describe "Aliaz" do
 
         expect { @aliaz.remove "app_name", "app_alias1" }.to_not raise_error
 
-        conf = YAML::load_file @conf_path
+        conf = @aliaz.load_aliases
 
         conf['app_name']['app_alias'].should eql 'value'
       end
