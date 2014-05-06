@@ -26,6 +26,14 @@ Feature: Aliaz
     """
     Alias 'alias.dotted.alias' with value 'alias value' was created successfully!
     """
+  Scenario: I am trying to add alias for app but i forgot the name or value of the alias
+    When I run `aliaz add app_name alias value`
+    Then the exit status should be 1
+    And the output should contain:
+    """
+    Ups ... you miss to add the name or value of the alias :)
+    Try something like this: 'aliaz add app.alias value' :)
+    """
 
   Scenario: Remove alias from app
     When I run `aliaz add app_name.alias some_alias`
@@ -39,7 +47,7 @@ Feature: Aliaz
   Scenario: Remove alias from not existing app
     When I run `aliaz add app_name.alias some_alias`
     And I run `aliaz remove app_name1 alias`
-    Then the exit status should be 0
+    Then the exit status should be 1
     And the output should contain:
     """
     The app 'app_name1' does not exist!

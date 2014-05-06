@@ -118,7 +118,18 @@ describe "Aliaz" do
         aliases = @aliaz.aliases :format => :bash
 
         # FIXME: This is very ugly
-        expect( aliases ).to eq "app_name() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias' ]]; then\n\t\talias_arguments='value'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name $cmd;\n\n};app_name1() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias1' ]]; then\n\t\talias_arguments='value1'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name1 $cmd;\n\n};"
+        expect( aliases ).to eq "aliaz() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'add' ]] || [[ $1 == 'remove' ]]; then\n\t\tcommand aliaz $@ && source /dev/stdin <<<  $(aliaz aliases --bash);\n\telse\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand aliaz $cmd;\n\tfi\n};app_name() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias' ]]; then\n\t\talias_arguments='value'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name $cmd;\n\n};app_name1() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias1' ]]; then\n\t\talias_arguments='value1'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name1 $cmd;\n\n};"
+      end
+
+      it 'get all aliases redy for bash source but with some custom aliaz aliases' do
+        @aliaz.add "app_name", "app_alias", "value"
+        @aliaz.add "app_name1", "app_alias1", "value1"
+        @aliaz.add "aliaz", "all", "aliases"
+        @aliaz.add "aliaz", "remove", "delete"
+        aliases = @aliaz.aliases :format => :bash
+
+        # FIXME: This is very ugly
+        expect( aliases ).to eq "app_name() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias' ]]; then\n\t\talias_arguments='value'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name $cmd;\n\n};app_name1() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias1' ]]; then\n\t\talias_arguments='value1'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name1 $cmd;\n\n};aliaz() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'all' ]]; then\n\t\talias_arguments='aliases'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [[ $1 == 'remove' ]]; then\n\t\talias_arguments='delete'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [[ $1 == 'add' ]] || [[ $1 == 'remove' ]]; then\n\t\tcommand aliaz $@ && source /dev/stdin <<<  $(aliaz aliases --bash);\n\telse\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand aliaz $cmd;\n\tfi\n};"
       end
 
       it 'get all aliases for specific app redy for bash source' do
@@ -127,7 +138,7 @@ describe "Aliaz" do
         aliases = @aliaz.aliases "app_name", :format => :bash
 
         # FIXME: This is very ugly
-        expect( aliases ).to eq "app_name() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias' ]]; then\n\t\talias_arguments='value'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name $cmd;\n\n};"
+        expect( aliases ).to eq "aliaz() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'add' ]] || [[ $1 == 'remove' ]]; then\n\t\tcommand aliaz $@ && source /dev/stdin <<<  $(aliaz aliases --bash);\n\telse\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand aliaz $cmd;\n\tfi\n};app_name() {\n\tlocal cmd='';\n\tlocal args=\"${@:2}\";\n\tif [[ $1 == 'app_alias' ]]; then\n\t\talias_arguments='value'\n\t\tcmd=\"$alias_arguments $args\";\n\tfi;\n\tif [ -z \"$cmd\" ]; then\n\t\tcmd=\"$@\";\n\tfi;\n\tcommand app_name $cmd;\n\n};"
       end
     end
 

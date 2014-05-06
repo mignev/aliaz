@@ -79,6 +79,13 @@ module Aliaz
     def to_bash(aliases)
       result = ""
 
+      ## Workaraund. When we add a new alias want it to be available immediately.
+      ## So ... we add hooks for aliaz to do that.
+      ## TODO: This is little messy have to fix it!
+      unless aliases.has_key? 'aliaz'
+        result << bash_template('aliaz', {})
+      end
+
       aliases.each do |app_name, app_aliases|
         result << bash_template(app_name, app_aliases)
       end
@@ -99,15 +106,28 @@ module Aliaz
           result << "\tfi;\n"
       end
 
+      ## TODO: try to avoid this workaround
+      if app_name == 'aliaz'
+        result << "\tif [[ $1 == 'add' ]] || [[ $1 == 'remove' ]]; then\n"
+        result << "\t\tcommand aliaz $@ && source /dev/stdin <<<  $(aliaz aliases --bash);\n"
+        result << "\telse\n"
+        result << "\t" << 'if [ -z "$cmd" ]; then' << "\n"
+        result << "\t\t" << 'cmd="$@";' << "\n"
+        result << "\tfi;\n"
 
-      result << "\t" << 'if [ -z "$cmd" ]; then' << "\n"
-      result << "\t\t" << 'cmd="$@";' << "\n"
-      result << "\tfi;\n"
+        result << "\tcommand #{app_name} $cmd;\n"
+        result << "\tfi\n"
+      else
+        result << "\t" << 'if [ -z "$cmd" ]; then' << "\n"
+        result << "\t\t" << 'cmd="$@";' << "\n"
+        result << "\tfi;\n"
 
-      result << "\tcommand #{app_name} $cmd;\n\n"
+        result << "\tcommand #{app_name} $cmd;\n\n"
+      end
+
       result << "};"
 
-      result
+        result
     end
 
   end

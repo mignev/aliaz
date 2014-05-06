@@ -11,6 +11,12 @@ module Aliaz
       the_alias = app_alias[1..-1].join('.')
       the_alias_value = alias_value.join(' ')
 
+      if the_alias.empty? || the_alias_value.empty?
+        puts "Ups ... you miss to add the name or value of the alias :)"
+        puts "Try something like this: 'aliaz add app.alias value' :)"
+        return 1
+      end
+
       aliaz = Aliaz.new
       aliaz.add app, the_alias, the_alias_value
       puts "Alias '#{the_alias}' with value '#{the_alias_value}' was created successfully!"
@@ -24,11 +30,11 @@ module Aliaz
         aliaz = Aliaz.new
         aliaz.remove app_name, app_alias
         puts "Alias '#{app_alias}' was removed successfully!"
+        return 0
       rescue NotExistingAppError
         puts "The app '#{app_name}' does not exist!"
+        return 1
       end
-
-      0
     end
 
     desc "aliases", "Shows all aliases"
