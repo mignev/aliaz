@@ -127,7 +127,7 @@ module Aliaz
 
       result << "};"
 
-        result
+      result
     end
 
   end
