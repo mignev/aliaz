@@ -138,7 +138,7 @@ module Aliaz
         result << "\teval command #{app_name} $cmd;\n\n"
       end
 
-      result << "};"
+      result << "};\n\n"
 
       result
     end
