@@ -9,7 +9,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Marian Ignev"]
   spec.email         = ["m.ignev@gmail.com"]
   spec.summary       = %q{Extend every shell app with custom aliases.}
-  spec.description   = %q{}
+  spec.description   = <<-EOF
+    This is a little program inspired from Git and its way to create aliases.
+    So the idea here is just like in Git to add aliases and makes your live easier
+    but for every shell app you use.
+  EOF
   spec.homepage      = "http://github.com/mignev/aliaz"
   spec.license       = "MIT"
 

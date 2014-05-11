@@ -31,6 +31,7 @@ module Aliaz
 
       aliases = load_aliases
 
+      # This is the very first alias :)
       unless aliases
         aliases = { app_name => { app_alias => alias_value }}
       end
@@ -96,8 +97,18 @@ module Aliaz
     def bash_template(app_name, aliases)
       result = "#{app_name}() {\n"
 
+      result << 'local all_args="";' << "\n"
+
+      result << 'for var in "$@"; do' << "\n"
+      result << "\t" << 'if [[ "$var" =~ " " ]]; then' << "\n"
+      result << "\t\t" << 'all_args="${all_args} \"${var}\"";'  << "\n"
+      result << "\telse\n"
+      result << "\t\t" <<  'all_args="$all_args $var";' << "\n"
+      result << "\tfi;\n"
+      result << "done;\n\n"
+
       result << "\tlocal cmd='';\n"
-      result << "\t" << 'local args="${@:2}";' << "\n"
+      result << "\t" << 'local args="${all_args:2}";' << "\n"
 
       aliases.each do |alias_name, arguments|
           result << "\tif [[ $1 == '#{alias_name}' ]]; then\n"
@@ -112,17 +123,17 @@ module Aliaz
         result << "\t\tcommand aliaz $@ && source /dev/stdin <<<  $(aliaz aliases --bash);\n"
         result << "\telse\n"
         result << "\t" << 'if [ -z "$cmd" ]; then' << "\n"
-        result << "\t\t" << 'cmd="$@";' << "\n"
+        result << "\t\t" << 'cmd="$all_args";' << "\n"
         result << "\tfi;\n"
 
         result << "\tcommand #{app_name} $cmd;\n"
         result << "\tfi\n"
       else
         result << "\t" << 'if [ -z "$cmd" ]; then' << "\n"
-        result << "\t\t" << 'cmd="$@";' << "\n"
+        result << "\t\t" << 'cmd="$all_args";' << "\n"
         result << "\tfi;\n"
 
-        result << "\tcommand #{app_name} $cmd;\n\n"
+        result << "\teval command #{app_name} $cmd;\n\n"
       end
 
       result << "};"
