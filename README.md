@@ -9,15 +9,19 @@ The idea behind this script is to extend every shell command with custom argumen
 
 ### Usage
 
-Without aliaser
+Without aliaz
 
     app create -t python-2.7 -a myapp
     app delete --confirm myapp
+    
+    python -m SimpleHTTPServer
 
-With aliaser
+With aliaz
 
     app create.py myapp
     app delete! myapp
+    
+    python server
 
 ### Config a.k.a config.yml
 
